@@ -1,15 +1,25 @@
 import Link from 'next/link';
 import MangaCard from '@/components/MangaCard';
-import { createClient } from '@/lib/supabase-server';
+import { createClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+export const fetchCache = 'force-no-store';
 
 export default async function Home({ searchParams }: { searchParams: { q?: string; category?: string } }) {
   const query = searchParams.q || '';
   const category = searchParams.category || 'All';
 
-  const supabase = await createClient();
+  const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+      {
+          auth: {
+              persistSession: false
+          }
+      }
+  );
+
   let dbQuery = supabase
     .from('mangas')
     .select('*')
@@ -22,7 +32,7 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
     dbQuery = dbQuery.ilike('category', `%${category}%`);
   }
 
-  const { data: mangas } = await dbQuery;
+  const { data: mangas, error } = await dbQuery;
 
   return (
     <div className="container mx-auto px-4 py-8 animate-in fade-in duration-500">
@@ -56,9 +66,15 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
         </div>
       </div>
 
-      {mangas && mangas.length === 0 && (
-          <div className="text-center py-12 text-slate-500 col-span-full">
-            No manga found matching your search criteria.
+      {error && (
+          <div className="text-red-500 text-center p-10 text-xl font-bold bg-red-500/10 rounded-2xl border border-red-500/20 col-span-full">
+            Error fetching data: {error.message}
+          </div>
+      )}
+
+      {!error && mangas && mangas.length === 0 && (
+          <div className="text-white text-center p-10 text-xl bg-slate-800/50 rounded-2xl border border-slate-700/50 col-span-full">
+            No mangas found in database. (Array is empty)
           </div>
       )}
 
