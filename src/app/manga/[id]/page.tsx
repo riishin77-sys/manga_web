@@ -4,9 +4,8 @@ import { ChevronLeft, List, Calendar } from 'lucide-react';
 import { createClient } from '@/lib/supabase-server';
 import { notFound } from 'next/navigation';
 
-export default async function MangaDetail({ params }: { params: Promise<{ id: string }> }) {
-    const resolvedParams = await params;
-    const { id } = resolvedParams;
+export default async function MangaDetail({ params }: { params: { id: string } }) {
+    const { id } = params;
     
     const supabase = await createClient();
     

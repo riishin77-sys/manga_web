@@ -11,8 +11,8 @@ const AVAILABLE_CATEGORIES = [
     'Mystery', 'Romance', 'Sci-Fi', 'Slice of Life', 'Sports', 'Thriller'
 ];
 
-export default function EditMangaPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = use(params);
+export default function EditMangaPage({ params }: { params: { id: string } }) {
+    const { id } = params;
     const [isLoading, setIsLoading] = useState(false);
     const [isFetching, setIsFetching] = useState(true);
 

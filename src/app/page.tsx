@@ -4,10 +4,9 @@ import { createClient } from '@/lib/supabase-server';
 
 export const dynamic = 'force-dynamic';
 
-export default async function Home({ searchParams }: { searchParams: Promise<{ q?: string; category?: string }> }) {
-  const resolvedParams = await searchParams;
-  const query = resolvedParams.q || '';
-  const category = resolvedParams.category || 'All';
+export default async function Home({ searchParams }: { searchParams: { q?: string; category?: string } }) {
+  const query = searchParams.q || '';
+  const category = searchParams.category || 'All';
 
   const supabase = await createClient();
   let dbQuery = supabase
