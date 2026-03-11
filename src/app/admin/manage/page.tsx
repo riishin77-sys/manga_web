@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Edit2, Trash2, Library, AlertTriangle } from 'lucide-react';
+import { Edit2, Trash2, Library, AlertTriangle, List } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
@@ -156,6 +156,9 @@ export default function ManageMangaPage() {
                                     </td>
                                     <td className="py-4 px-4 align-top text-right">
                                         <div className="flex items-center justify-end gap-2">
+                                            <Link href={`/admin/manage/${manga.id}/chapters`} className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-xl transition-all border border-transparent hover:border-blue-500/30" title="Manage Chapters">
+                                                <List size={18} />
+                                            </Link>
                                             <Link href={`/admin/edit/${manga.id}`} className="p-2 text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-xl transition-all border border-transparent hover:border-emerald-500/30" title="Edit">
                                                 <Edit2 size={18} />
                                             </Link>
