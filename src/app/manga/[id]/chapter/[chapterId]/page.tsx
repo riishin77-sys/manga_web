@@ -6,8 +6,8 @@ import ChapterViewer from '@/components/ChapterViewer';
 import { supabase } from '@/lib/supabase';
 import { getDriveImages } from '@/lib/drive';
 
-export default async function ChapterPage({ params }: { params: { id: string, chapterId: string } }) {
-    const { id, chapterId } = params;
+export default async function ChapterPage({ params }: { params: Promise<{ id: string, chapterId: string }> }) {
+    const { id, chapterId } = await params;
 
     const { data: chapter, error } = await supabase
         .from('chapters')

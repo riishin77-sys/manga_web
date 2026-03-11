@@ -6,9 +6,10 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'force-no-store';
 
-export default async function Home({ searchParams }: { searchParams: { q?: string; category?: string } }) {
-  const query = searchParams.q || '';
-  const category = searchParams.category || 'All';
+export default async function Home({ searchParams }: { searchParams: Promise<{ q?: string; category?: string }> }) {
+  const awaitedParams = await searchParams;
+  const query = awaitedParams.q || '';
+  const category = awaitedParams.category || 'All';
 
   const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL || '',

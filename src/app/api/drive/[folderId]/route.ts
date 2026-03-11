@@ -4,8 +4,9 @@ import { createClient } from '@/lib/supabase-server';
 
 export async function DELETE(
     request: Request,
-    { params }: { params: { folderId: string } }
+    { params }: { params: Promise<{ folderId: string }> }
 ) {
+    const { folderId } = await params;
     try {
         // Enforce Authentication
         const supabase = await createClient();
@@ -19,7 +20,7 @@ export async function DELETE(
         
         // Delete the folder (and all contents inside it are automatically deleted)
         await drive.files.delete({
-            fileId: params.folderId
+            fileId: folderId
         });
 
         return NextResponse.json({ success: true });

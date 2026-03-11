@@ -7,9 +7,9 @@ export const fetchCache = 'force-no-store';
 
 export async function GET(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
-    const { id } = params;
+    const { id } = await params;
 
     if (!id) {
         return new NextResponse('Missing file ID', { status: 400 });
