@@ -3,6 +3,7 @@ import MangaCard from '@/components/MangaCard';
 import { createClient } from '@/lib/supabase-server';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function Home({ searchParams }: { searchParams: { q?: string; category?: string } }) {
   const query = searchParams.q || '';
